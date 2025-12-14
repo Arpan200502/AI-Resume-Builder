@@ -467,3 +467,16 @@ iframe {
   border: none;
   background: white;
 }
+/* Update in style.css */
+.panel {
+  /* ... existing styles ... */
+  overflow: hidden; /* Ensures nothing spills out of the rounded corners */
+}
+
+/* Ensure iframe doesn't have a minimum height that is too tall on mobile */
+iframe {
+  width: 100%;
+  /* Remove min-height: 90vh if it feels too long, 
+     or keep it, but the JS will now control the exact height */
+  transition: height 0.3s ease;
+}
