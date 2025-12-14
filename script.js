@@ -1435,89 +1435,71 @@ if (!API_KEY) {
 // and `html` is the generated HTML string you just wrote into the iframe
 
 // small delay so the iframe renders
+// ----------------------------
+// REPLACEMENT FOR THE SETTIMEOUT BLOCK
+// ----------------------------
 setTimeout(() => {
   const frameDoc = frame.contentDocument || frame.contentWindow.document;
   if (!frameDoc) return;
 
-  // Force the iframe's root to exact A4 dims for print, and remove any preview scale
-  frame.style.width = "210mm";   // width of A4
-  frame.style.height = "297mm";  // height of A4
+  // --- 1. RESET FOR PREVIEW ---
+  frame.style.width = "100%";
+  frame.style.height = "100%";
+  
+  // ✅ RESTORED: Force the iframe container to be white
+  frame.style.background = "#ffffff";  
+  
+  // Optional: Add a subtle border for a 'paper' look on mobile
+  frame.style.border = "none";
 
-  // Ensure the iframe element background and border are visible (outer frame)
-  try {
-    frame.style.background = '#ffffff';
-    frame.style.border = '1px solid #e0e0e0';
-  } catch (e) {
-    console.warn('Could not set iframe element styles:', e);
+  // --- 2. CALCULATE SCALE FOR MOBILE PREVIEW ---
+  const a4WidthPx = 794; 
+  const containerWidth = frame.clientWidth; 
+  let scale = 1;
+
+  if (containerWidth < a4WidthPx) {
+    scale = containerWidth / a4WidthPx;
   }
 
-  // Ensure the iframe body uses exact A4 and remove margins
-  frameDoc.documentElement.style.margin = "0";
-  frameDoc.documentElement.style.padding = "0";
-  frameDoc.body.style.margin = "0";
-  frameDoc.body.style.padding = "0";
-  frameDoc.body.style.width = "210mm";
-  frameDoc.body.style.height = "297mm";
-  frameDoc.body.style.boxSizing = "border-box";
-  // Also set the inner document background to white so content appears as expected
+  // --- 3. APPLY SCALING TO BODY ---
+  frameDoc.body.style.transformOrigin = "top left";
+  frameDoc.body.style.transform = `scale(${scale})`;
+  frameDoc.body.style.width = "210mm"; 
+  frameDoc.body.style.height = "297mm"; 
+  
+  // Ensure the internal document background is also white
   try {
-    // Use setProperty with important to override inline or internal CSS if needed
-    frameDoc.body.style.setProperty('background', '#ffffff', 'important');
-  } catch (e) {
-    console.warn('Unable to set iframe document body background:', e);
-  }
+    frameDoc.body.style.background = "#ffffff";
+    frameDoc.documentElement.style.background = "#ffffff";
+  } catch(e) {}
 
-  // remove any preview scale inside the template (the print CSS will handle final fit)
-  const scaleWrap = frameDoc.getElementById("scale-wrap") || frameDoc.getElementById("force-scale");
-  if (scaleWrap) {
-    scaleWrap.style.transform = "none";
-    scaleWrap.style.zoom = "1";
-    scaleWrap.style.width = "210mm";
-    scaleWrap.style.height = "297mm";
-  }
+  // Adjust iframe height so no big empty space or scrollbars
+  frame.style.height = `${1123 * scale + 20}px`; 
 
-  // Some previews use inline wrapper scale for screen. For screen preview we can compute optimal scale
-  // so it looks similar on screen but DOES NOT affect print. This is optional — keeps preview readable.
-  // Compute scale to fit the iframe viewport if preview is small:
-  try {
-    const resume = frameDoc.querySelector(".resume-wrapper");
-    if (resume) {
-      // measured size (px) of resume in iframe
-      const resumeHeight = resume.scrollHeight;
-      const resumeWidth = resume.scrollWidth;
-      const availH = frame.clientHeight || 1122; // fallback
-      const availW = frame.clientWidth || 794;
-
-      // compute safe scale for screen preview only (do not apply for print)
-      let scale = 1;
-      if (resumeHeight > availH) scale = Math.min(scale, availH / resumeHeight);
-      if (resumeWidth > availW)  scale = Math.min(scale, availW / resumeWidth);
-
-      // only apply small preview scaling if needed
-      if (scale < 0.999) {
-        frameDoc.body.style.transformOrigin = "top center";
-        frameDoc.body.style.transform = `scale(${scale})`;
-      } else {
-        frameDoc.body.style.transform = "none";
+  // --- 4. CRITICAL: INJECT PRINT FIX ---
+  const styleTag = frameDoc.createElement("style");
+  styleTag.textContent = `
+    @media print {
+      body {
+        transform: none !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+      html {
+        width: 210mm !important;
+        height: 297mm !important;
       }
     }
-  } catch (e) {
-    console.warn("preview-scale failed:", e);
-  }
+  `;
+  frameDoc.head.appendChild(styleTag);
 
-  // Now printing: remove any preview scaling (ensure print uses exact A4)
-  // When user clicks Download/Print, call:
-  // frame.contentWindow.focus(); frame.contentWindow.print();
+  // Enable the download button
+  if (window.enableDownload) window.enableDownload();
 
-  // Ensure download only becomes available after preview rendering adjustments
-  try {
-    if (window.enableDownload) window.enableDownload();
-  } catch (e) {
-    console.warn('enableDownload call failed:', e);
-  }
-
-}, 120);
-
+}, 150);
     // Save last HTML for download/copy
     window.generatedResumeHTML = html;
 
@@ -1560,30 +1542,47 @@ if (copyBtn) {
   // (Removed duplicate simple handler — styling for iframe is now handled directly after rendering)
 // Initialize download button and ensure handler registers whether the
 // script runs before or after DOMContentLoaded.
+// ----------------------------
+// DOWNLOAD → PRINT IFRAME ONLY
+// ----------------------------
 (function initDownload() {
   const setup = () => {
     const downloadBtn = document.getElementById("downloadBtn");
     const frame = document.getElementById("resumeFrame");
 
-    if (!downloadBtn || !frame) {
-      console.error("Download button or iframe missing");
-      return;
-    }
+    if (!downloadBtn || !frame) return;
 
     downloadBtn.addEventListener("click", () => {
-      if (!frame.contentWindow || !frame.contentDocument || !frame.contentDocument.body.innerHTML.trim()) {
-        alert("Generate resume first");
-        return;
-      }
+      // 1. Check if content exists
+      if (!frame.contentWindow || !frame.contentDocument) return;
+
+      // 2. TEMPORARILY RESTORE FULL SIZE FOR PRINTING
+      // We force the iframe width to match A4 so the browser print dialog sees full width
+      const originalWidth = frame.style.width;
+      const originalHeight = frame.style.height;
+      const frameDoc = frame.contentDocument;
+      const originalTransform = frameDoc.body.style.transform;
+
+      // Force full A4 size
+      frame.style.width = "210mm";
+      frame.style.height = "297mm";
+      frameDoc.body.style.transform = "none"; // Remove zoom
+
+      // 3. PRINT
       frame.contentWindow.focus();
       frame.contentWindow.print();
+
+      // 4. RESTORE PREVIEW (After a tiny delay to ensure print dialog caught it)
+      // Note: On mobiles, print dialogs pauses JS, so this runs after you close print.
+      setTimeout(() => {
+        frame.style.width = originalWidth;
+        frame.style.height = originalHeight;
+        frameDoc.body.style.transform = originalTransform;
+      }, 500);
     });
 
-    // expose function to enable button after generation
     window.enableDownload = () => {
-      const btn = document.getElementById("downloadBtn");
-      if (btn) btn.disabled = false;
-      else console.error('enableDownload: download button not found');
+      downloadBtn.disabled = false;
     };
   };
 
