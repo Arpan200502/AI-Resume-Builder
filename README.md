@@ -1,8 +1,4 @@
-Here’s a **clean, professional, GitHub-ready README** with **proper headings, bold sections, emojis kept minimal**, and clear structure.
-You can **copy-paste this directly into `README.md`**.
-
----
-
++
 # 🧠 AI Resume Builder
 
 **ATS-Optimized • One-Page • AI-Powered**
@@ -206,12 +202,3 @@ or simply **double-click `index.html`**.
 
 ---
 
-If you want, next I can:
-
-* Add **badges** (stars, license, tech stack)
-* Write a **short project description** for your GitHub profile
-* Create a **demo GIF section**
-* Optimize this README for **recruiters viewing your repo**
-
-Just tell me 👍
-tice research
