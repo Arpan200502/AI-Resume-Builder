@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>AI Resume Builder</title>
+  </head>
+  <body>
+    
+    <div class="container">
+      
+      <!-- LEFT PANEL -->
+       
+      <div class="panel">
+        
+        <h1>AI Resume Builder</h1>
+        <p class="subtitle">Powered by Groq LLaMA-3.3</p>
+        <a href="http://www.google.com/">
+        <button class="btn hmbtn"  >HOME</button>
+        </a>
+        <div class="form-group">
+          <label for="templateSelect">Template</label>
+          <select id="templateSelect">
+            
+            <option value="ats">ATS</option>
+            <option value="olivia">ATS MODERN</option>
+            <option value="modern">MODERN SIMPLE</option>
+            <option value="dark">MODERN BLUE</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="api-key-group">
+  <label for="userApiKey">Groq API Key</label>
+  <input
+    type="password"
+    id="userApiKey"
+    placeholder="gsk_..."
+    autocomplete="off"
+  />
+</div>
+
+          <label>Personal Information👤</label>
+          <textarea id="personalInfo" placeholder="Name, Email, Phone, GitHub, etc."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Education🎓</label>
+          <textarea id="education"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Experience💼</label>
+          <textarea id="experience"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Projects📂</label>
+          <textarea id="projects"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Skills🛠️</label>
+          <textarea id="skills"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Extracurricular🏆</label>
+          <textarea id="extracurricular"></textarea>
+        </div>
+
+        <button class="btn" id="generateBtn">Generate Resume with AI</button>
+
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          <p>Generating your resume...</p>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="panel">
+        <h1>Resume Preview</h1>
+
+        <!-- THE IFRAME PREVIEW -->
+        <iframe id="resumeFrame"
+          style="width:100%; height:850px; border:1px solid hsl(222, 30%, 18%); background:hsl(222, 30%, 18%); border-radius:8px;">
+        </iframe>
+
+        <div class="action-buttons">
+          <button class="btn" id="downloadBtn" disabled>Download PDF</button>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
