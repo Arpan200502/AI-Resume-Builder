@@ -480,3 +480,282 @@ iframe {
      or keep it, but the JS will now control the exact height */
   transition: height 0.3s ease;
 }
+/* ================================
+   BRAND THEME OVERRIDES (APPEND)
+   ================================ */
+
+:root {
+  /* Brand Colors */
+  --brand-purple: 258 90% 66%;
+  --brand-pink: 330 81% 60%;
+  --brand-gold: 45 96% 56%;
+
+  /* Backgrounds */
+  --bg-main: 240 33% 5%;
+  --bg-panel: 240 33% 13%;
+
+  /* Text */
+  --text-primary: 0 0% 100%;
+  --text-secondary: 220 13% 82%;
+  --text-tertiary: 220 9% 65%;
+  --text-muted: 220 9% 46%;
+
+  /* Semantic */
+  --success: 142 71% 45%;
+  --warning: 45 96% 56%;
+  --danger: 0 84% 60%;
+}
+
+/* ---------- GLOBAL ---------- */
+
+body {
+  background: hsl(var(--bg-main));
+  color: hsl(var(--text-primary));
+}
+
+.panel {
+  background: hsl(var(--bg-panel));
+  border: 1px solid hsla(var(--brand-purple), 0.25);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 0 1px hsla(var(--brand-purple), 0.08);
+}
+
+/* ---------- HEADERS ---------- */
+
+h1 {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--brand-purple)) 0%,
+    hsl(var(--brand-pink)) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: hsl(var(--text-tertiary));
+}
+
+/* ---------- FORMS ---------- */
+
+label {
+  color: hsl(var(--text-secondary));
+}
+
+input,
+textarea,
+select {
+  background: hsl(var(--bg-panel));
+  color: hsl(var(--text-primary));
+  border-color: hsla(var(--brand-purple), 0.25);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: hsl(var(--text-muted));
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: hsl(var(--brand-pink));
+  box-shadow: 0 0 25px hsla(var(--brand-pink), 0.35);
+}
+
+/* ---------- BUTTONS ---------- */
+
+.btn {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--brand-purple)) 0%,
+    hsl(var(--brand-pink)) 50%,
+    hsl(var(--brand-gold)) 100%
+  );
+  color: hsl(var(--bg-main));
+  box-shadow:
+    0 10px 30px hsla(var(--brand-purple), 0.35),
+    0 0 60px hsla(var(--brand-pink), 0.2);
+}
+
+.btn:hover {
+  box-shadow:
+    0 14px 40px hsla(var(--brand-pink), 0.45),
+    0 0 80px hsla(var(--brand-gold), 0.25);
+}
+
+.btn-secondary {
+  background: hsla(var(--brand-purple), 0.12);
+  border: 1px solid hsla(var(--brand-pink), 0.25);
+  color: hsl(var(--text-primary));
+}
+
+/* ---------- LOADING ---------- */
+
+.loading {
+  color: hsl(var(--brand-pink));
+}
+
+.spinner {
+  border-color: hsla(var(--brand-purple), 0.25);
+  border-top-color: hsl(var(--brand-gold));
+}
+
+/* ---------- RESUME PREVIEW ---------- */
+
+#resumePreview {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* ---------- SCROLLBAR ---------- */
+
+textarea::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--brand-purple)),
+    hsl(var(--brand-pink))
+  );
+}
+
+/* ---------- ACCENT UTILITIES ---------- */
+
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    hsl(var(--brand-purple)) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glow-accent {
+  box-shadow: 0 0 40px hsla(var(--brand-pink), 0.35);
+}
+/* ================================
+   PILL STYLE INPUTS (NO BORDER)
+   ================================ */
+
+input,
+textarea,
+select {
+  border: none !important;
+  outline: none;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    180deg,
+    hsla(258, 90%, 66%, 0.08),
+    hsla(240, 33%, 13%, 0.95)
+  );
+
+  color: hsl(var(--text-primary));
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6);
+
+  transition: all 0.25s ease;
+}
+
+/* Placeholder */
+input::placeholder,
+textarea::placeholder {
+  color: hsl(var(--text-muted));
+}
+
+/* Focus — subtle glow, still no border */
+input:focus,
+textarea:focus,
+select:focus {
+  background: linear-gradient(
+    180deg,
+    hsla(330, 81%, 60%, 0.12),
+    hsla(240, 33%, 13%, 1)
+  );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 0 1px hsla(var(--brand-pink), 0.45),
+    0 0 22px hsla(var(--brand-pink), 0.35);
+}
+
+/* Hover polish */
+input:hover,
+textarea:hover,
+select:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 0 0 1px hsla(var(--brand-purple), 0.35);
+}
+/* ================================
+   CUSTOM DROPDOWN (SELECT)
+   ================================ */
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  border: none !important;
+  outline: none;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      hsla(258, 90%, 66%, 0.08),
+      hsla(240, 33%, 13%, 0.95)
+    );
+
+  color: hsl(var(--text-primary));
+  cursor: pointer;
+
+  padding-right: 42px; /* space for arrow */
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6);
+
+  transition: all 0.25s ease;
+}
+
+/* Custom arrow */
+select {
+  background-image:
+    linear-gradient(
+      180deg,
+      hsla(258, 90%, 66%, 0.08),
+      hsla(240, 33%, 13%, 0.95)
+    ),
+    url("data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>\
+      <polyline points='6 9 12 15 18 9'/>\
+    </svg>");
+
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px;
+}
+
+/* Focus glow */
+select:focus {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 0 1px hsla(var(--brand-pink), 0.45),
+    0 0 22px hsla(var(--brand-pink), 0.35);
+}
+
+/* Hover polish */
+select:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 0 0 1px hsla(var(--brand-purple), 0.35);
+}
+
+/* Dropdown menu (options list) */
+select option {
+  background: hsl(var(--bg-panel));
+  color: hsl(var(--text-primary));
+}
