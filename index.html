@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
   <title>AI Resume Builder</title>
+<style>
+  body.preload .container {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+</style>
 
   <!-- Disable browser scroll restoration -->
   <script>
@@ -14,17 +20,17 @@
   </script>
 </head>
 <script>
-  window.onload = () => {
-    // HARD reset scroll
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-
+  window.addEventListener("load", () => {
+    // Force a paint frame before toggling classes
     requestAnimationFrame(() => {
-      document.body.classList.remove("preload");
-      document.body.classList.add("loaded");
+      requestAnimationFrame(() => {
+        document.body.classList.remove("preload");
+        document.body.classList.add("loaded");
+      });
     });
-  };
+  });
 </script>
+
 
  
 
