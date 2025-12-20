@@ -759,3 +759,135 @@ select option {
   background: hsl(var(--bg-panel));
   color: hsl(var(--text-primary));
 }
+/* ==========================================
+   PAGE LOAD ANIMATION
+   ========================================== */
+
+/* Initial hidden state */
+body.preload {
+  overflow: hidden;
+}
+
+body.preload .container {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Animate container in */
+body.loaded .container {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Panels animation */
+body.preload .panel {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+}
+
+body.loaded .panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Stagger left/right panels */
+body.loaded .panel:nth-child(1) {
+  transition-delay: 0.1s;
+}
+body.loaded .panel:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+/* Inner content stagger */
+body.preload .panel * {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+body.loaded .panel * {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Subtle stagger effect */
+body.loaded .panel *:nth-child(1) { transition-delay: 0.15s; }
+body.loaded .panel *:nth-child(2) { transition-delay: 0.2s; }
+body.loaded .panel *:nth-child(3) { transition-delay: 0.25s; }
+body.loaded .panel *:nth-child(4) { transition-delay: 0.3s; }
+body.loaded .panel *:nth-child(5) { transition-delay: 0.35s; }
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  body.preload .container,
+  body.preload .panel,
+  body.preload .panel * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+body.preload .container {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+body.loaded .container {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* PAGE LOAD FADE IN */
+
+body.preload .container {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+body.loaded .container {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Panels */
+
+body.preload .panel {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+body.loaded .panel {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+body.loaded .panel:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  body.preload .container,
+  body.preload .panel {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Prevent scroll jump during preload */
+body.preload {
+  overflow: hidden;
+}
+body {
+  font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: hsl(var(--bg-main));
+  min-height: 100vh;
+  padding: 20px;
+
+  /* IMPORTANT */
+  display: block;
+}

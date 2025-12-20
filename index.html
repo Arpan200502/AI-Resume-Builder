@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>AI Resume Builder</title>
-  </head>
-  <body>
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>AI Resume Builder</title>
+
+  <!-- Disable browser scroll restoration -->
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+  </script>
+</head>
+<script>
+  window.onload = () => {
+    // HARD reset scroll
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    requestAnimationFrame(() => {
+      document.body.classList.remove("preload");
+      document.body.classList.add("loaded");
+    });
+  };
+</script>
+
+ 
+
+
+
+  <body class="preload">
+
     
     <div class="container">
       
@@ -16,7 +41,7 @@
         
         <h1>AI Resume Builder</h1>
         <p class="subtitle">Powered by Groq LLaMA-3.3</p>
-        <a href="https://airesumegenn.netlify.app/">
+        <a href="http://www.google.com/">
         <button class="btn hmbtn"  >HOME</button>
         </a>
         <div class="form-group">
