@@ -891,3 +891,68 @@ body {
   /* IMPORTANT */
   display: block;
 }
+
+/* ================================
+   DEMO RESUME INPUTS (DARK THEME)
+   ================================ */
+
+.demo-box {
+  margin: 16px 0;
+  padding: 14px 16px;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(139, 92, 246, 0.10),
+    rgba(236, 72, 153, 0.06)
+  );
+
+  border: 1px solid rgba(139, 92, 246, 0.28);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Heading */
+.demo-box h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e5e7eb;
+  margin: 0;
+  margin-right: auto;
+  white-space: nowrap;
+}
+
+/* Buttons */
+.demo-btn {
+  background: #8b5cf6;
+  color: #ffffff;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.demo-btn:hover {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.4);
+}
+
+/* Click */
+.demo-btn:active {
+  transform: scale(0.96);
+}
+.hidden {
+  display: none !important;
+}
+
