@@ -1592,3 +1592,60 @@ if (copyBtn) {
     setup();
   }
 })();
+// -------- RESUME DEMO DATA --------
+const resumeDemoData = {
+  1: {
+    personalInfo: `Arjun Mehta, arjun.mehta@example.com, +91 9876543210, Bengaluru, India, linkedin.com/in/arjunmehta, github.com/arjun-dev`,
+
+    education: `B.Tech in Computer Science and Engineering from SRM Institute of Science and Technology. Graduation year is 2024. CGPA is 8.7/10. studied Data Structures, Algorithms, OS, DBMS, AI & ML etc.
+`,
+
+    experience: `I did a Software Engineering Internship at Infosys from May to July 2023. basically i worked on some internal dashboard features using React and Node.js. i think i improved the load speed by like somthing i dont remember % or something? also implemented some APIs for real-time data stuff using Express.js. collaborated with a team of 6 engineers in agile sprints.
+Before that i was a Backend Developer Intern at Zeta Tech (Jan - Mar 2023). built REST APIs in Python using FastAPI. i also optimized DB queries using PostgreSQL. designed some authentication flows that reduced login time by some % maybe.
+
+
+`,
+
+    projects: `ASmart Attendance System. used Python and OpenCV and Flask. it was a face recognition system, accuracy was aroundsome degree i dont reemeberthe exact percventage. built an admin panel and stored logs in MySQL i think.
+E-Commerce Web App. built with React, Node.js and MongoDB. implemented cart, checkout, auth and an admin dashboard. integrated a payment gateway and used caching for performance.
+AI Resume Builder. used HTML CSS JS and the Gemini API. it's an AI-powered resume generator. has PDF export and HTML export features.r. used HTML CSS JS and the Gemini API. it's an AI-powered resume generator. has PDF export and HTML export features.`,
+
+    skills: `frontend backend languages databases Python, JavaScript, Java, C++, HTML, CSS, React.js, Tailwind, Node.js, Express.js, FastAPI, MongoDB, MySQL, PostgreSQL, Git, Docker, Postman, Google Cloud, Firebase
+`,
+
+    extracurricular: `•English, Hindi
+ Participated in college tech events
+• Self-learning web development through projects
+• Regular problem solving and coding practice`
+  },
+
+  
+};
+
+// -------- DOM READY --------
+document.addEventListener("DOMContentLoaded", () => {
+
+  const demo1 = document.getElementById("resumeDemo1");
+  const demo2 = document.getElementById("resumeDemo2");
+
+  if (demo1 && demo2) {
+    demo1.addEventListener("click", () => injectResumeDemo(1));
+    demo2.addEventListener("click", () => injectResumeDemo(2));
+  } else {
+    console.warn("Resume demo buttons not found in DOM");
+  }
+
+});
+
+// -------- INJECT FUNCTION --------
+function injectResumeDemo(option) {
+  const data = resumeDemoData[option];
+
+  document.getElementById("personalInfo").value = data.personalInfo;
+  document.getElementById("education").value = data.education;
+  document.getElementById("experience").value = data.experience;
+  document.getElementById("projects").value = data.projects;
+  document.getElementById("skills").value = data.skills;
+  document.getElementById("extracurricular").value = data.extracurricular;
+}
+
