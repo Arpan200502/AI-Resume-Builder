@@ -955,4 +955,33 @@ body {
 .hidden {
   display: none !important;
 }
+.howapi {
+  display: flex;
+  margin-left: 550px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  text-decoration: none; /* only once */
+}
 
+/* Large laptops */
+@media (max-width: 1200px) {
+  .howapi { margin-left: 780px; }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+  .howapi { margin-left: 250px; }
+}
+
+/* Small tablets */
+@media (max-width: 768px) {
+  .howapi { margin-left: 510px; }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .howapi {
+    margin-left: 0;
+    justify-content: center;
+  }
+}
