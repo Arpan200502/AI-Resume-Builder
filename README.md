@@ -6,7 +6,7 @@ An **AI-powered resume builder** that generates **ATS-friendly, one-page resumes
 
 The app takes **unstructured user input** (education, experience, projects, skills) and converts it into **professionally written, print-ready resumes** using multiple templates.
 
-> 👉 **No backend required** — users securely provide **their own API key**. 
+> 👉 **No backend required** — users securely provide **their own API key**.  
  
 ---
 
