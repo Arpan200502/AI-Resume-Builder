@@ -10,7 +10,7 @@ The app takes **unstructured user input** (education, experience, projects, skil
  
 ---
 
-
+ 
 ## ✨ Key Features
 ### 🧾 One-Page A4 Resume Enforcement
 
