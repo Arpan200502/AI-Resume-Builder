@@ -1,6 +1,6 @@
  # 🧠 AI Resume Builder  
 
-**ATS-Optimized • One-Page • AI-Powered**
+**ATS-Optimized • One-Page • AI-Powered** 
    
 An **AI-powered resume builder** that generates **ATS-friendly, one-page resumes** using modern Large Language Models (LLMs).
 
