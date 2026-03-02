@@ -1,18 +1,3 @@
-// ----------------------------
-// HARD-CODED GROQ API KEY
-// ----------------------------
-const apiKeyInput = document.getElementById("userApiKey");
-
-// Load saved key
-apiKeyInput.value = localStorage.getItem("GROQ_API_KEY") || "";
-
-// Save on change
-apiKeyInput.addEventListener("input", () => {
-  localStorage.setItem("GROQ_API_KEY", apiKeyInput.value.trim());
-});
-
-
-
 const MODEL = "llama-3.3-70b-versatile";
 
 // ----------------------------
@@ -370,7 +355,6 @@ body.compact-mode .job-block, body.compact-mode .project-block { margin-bottom: 
 </html>
 
 `;
-
 
 const atsPrompt = `
 You are generating a resume using the “ATS Classic Serif Resume Template (Richard Williams Style)”.
@@ -1376,13 +1360,6 @@ No explanations.
 // ----------------------------
 document.getElementById("generateBtn").addEventListener("click", async () => {
   const template = document.getElementById("templateSelect").value;
-const API_KEY = apiKeyInput.value.trim();
-
-if (!API_KEY) {
-  alert("Please enter your Groq API key");
-  document.getElementById("loading").classList.remove("active");
-  return;
-}
 
   let prompt = "";
   if (template === "olivia") prompt = oliviaPrompt;
@@ -1397,28 +1374,30 @@ if (!API_KEY) {
     .replace("[EXPERIENCE]", document.getElementById("experience").value)
     .replace("[PROJECTS]", document.getElementById("projects").value)
     .replace("[SKILLS]", document.getElementById("skills").value)
-    .replace("[EXTRACURRICULAR]", document.getElementById("extracurricular").value);
+    .replace(
+      "[EXTRACURRICULAR]",
+      document.getElementById("extracurricular").value,
+    );
 
   // Show loading UI
   document.getElementById("loading").classList.add("active");
 
   try {
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${API_KEY}`,
-        "X-Request-Origin": window.location.origin
+    const response = await fetch(
+      "https://backend-ufna.onrender.com/generate-resume",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+        }),
       },
-      body: JSON.stringify({
-        model: MODEL,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.3,
-      })
-    });
+    );
 
     const data = await response.json();
-    const html = data.choices[0].message.content;
+    const html = data.html;
 
     // ----------------------------
     // RENDER IN IFRAME (CSS SAFE)
@@ -1431,54 +1410,54 @@ if (!API_KEY) {
     doc.close();
     if (window.enableDownload) window.enableDownload();
 
-// assume `frame` is your iframe element (document.getElementById("resumeFrame"))
-// and `html` is the generated HTML string you just wrote into the iframe
+    // assume `frame` is your iframe element (document.getElementById("resumeFrame"))
+    // and `html` is the generated HTML string you just wrote into the iframe
 
-// small delay so the iframe renders
-// ----------------------------
-// REPLACEMENT FOR THE SETTIMEOUT BLOCK
-// ----------------------------
-setTimeout(() => {
-  const frameDoc = frame.contentDocument || frame.contentWindow.document;
-  if (!frameDoc) return;
+    // small delay so the iframe renders
+    // ----------------------------
+    // REPLACEMENT FOR THE SETTIMEOUT BLOCK
+    // ----------------------------
+    setTimeout(() => {
+      const frameDoc = frame.contentDocument || frame.contentWindow.document;
+      if (!frameDoc) return;
 
-  // --- 1. RESET FOR PREVIEW ---
-  frame.style.width = "100%";
-  frame.style.height = "100%";
-  
-  // ✅ RESTORED: Force the iframe container to be white
-  frame.style.background = "#ffffff";  
-  
-  // Optional: Add a subtle border for a 'paper' look on mobile
-  frame.style.border = "none";
+      // --- 1. RESET FOR PREVIEW ---
+      frame.style.width = "100%";
+      frame.style.height = "100%";
 
-  // --- 2. CALCULATE SCALE FOR MOBILE PREVIEW ---
-  const a4WidthPx = 794; 
-  const containerWidth = frame.clientWidth; 
-  let scale = 1;
+      // ✅ RESTORED: Force the iframe container to be white
+      frame.style.background = "#ffffff";
 
-  if (containerWidth < a4WidthPx) {
-    scale = containerWidth / a4WidthPx;
-  }
+      // Optional: Add a subtle border for a 'paper' look on mobile
+      frame.style.border = "none";
 
-  // --- 3. APPLY SCALING TO BODY ---
-  frameDoc.body.style.transformOrigin = "top left";
-  frameDoc.body.style.transform = `scale(${scale})`;
-  frameDoc.body.style.width = "210mm"; 
-  frameDoc.body.style.height = "297mm"; 
-  
-  // Ensure the internal document background is also white
-  try {
-    frameDoc.body.style.background = "#ffffff";
-    frameDoc.documentElement.style.background = "#ffffff";
-  } catch(e) {}
+      // --- 2. CALCULATE SCALE FOR MOBILE PREVIEW ---
+      const a4WidthPx = 794;
+      const containerWidth = frame.clientWidth;
+      let scale = 1;
 
-  // Adjust iframe height so no big empty space or scrollbars
-  frame.style.height = `${1123 * scale + 20}px`; 
+      if (containerWidth < a4WidthPx) {
+        scale = containerWidth / a4WidthPx;
+      }
 
-  // --- 4. CRITICAL: INJECT PRINT FIX ---
-  const styleTag = frameDoc.createElement("style");
-  styleTag.textContent = `
+      // --- 3. APPLY SCALING TO BODY ---
+      frameDoc.body.style.transformOrigin = "top left";
+      frameDoc.body.style.transform = `scale(${scale})`;
+      frameDoc.body.style.width = "210mm";
+      frameDoc.body.style.height = "297mm";
+
+      // Ensure the internal document background is also white
+      try {
+        frameDoc.body.style.background = "#ffffff";
+        frameDoc.documentElement.style.background = "#ffffff";
+      } catch (e) {}
+
+      // Adjust iframe height so no big empty space or scrollbars
+      frame.style.height = `${1123 * scale + 20}px`;
+
+      // --- 4. CRITICAL: INJECT PRINT FIX ---
+      const styleTag = frameDoc.createElement("style");
+      styleTag.textContent = `
     @media print {
       body {
         transform: none !important;
@@ -1494,12 +1473,11 @@ setTimeout(() => {
       }
     }
   `;
-  frameDoc.head.appendChild(styleTag);
+      frameDoc.head.appendChild(styleTag);
 
-  // Enable the download button
-  if (window.enableDownload) window.enableDownload();
-
-}, 150);
+      // Enable the download button
+      if (window.enableDownload) window.enableDownload();
+    }, 150);
     // Save last HTML for download/copy
     window.generatedResumeHTML = html;
 
@@ -1507,9 +1485,8 @@ setTimeout(() => {
     try {
       if (window.enableDownload) window.enableDownload();
     } catch (e) {
-      console.warn('enableDownload call failed:', e);
+      console.warn("enableDownload call failed:", e);
     }
-
   } catch (err) {
     alert("Error: " + err.message);
   }
@@ -1538,8 +1515,7 @@ if (copyBtn) {
 // DOWNLOAD → PRINT IFRAME ONLY
 // ----------------------------
 
-
-  // (Removed duplicate simple handler — styling for iframe is now handled directly after rendering)
+// (Removed duplicate simple handler — styling for iframe is now handled directly after rendering)
 // Initialize download button and ensure handler registers whether the
 // script runs before or after DOMContentLoaded.
 // ----------------------------
@@ -1616,15 +1592,12 @@ AI Resume Builder. used HTML CSS JS and the Gemini API. it's an AI-powered resum
     extracurricular: `•English, Hindi
  Participated in college tech events
 • Self-learning web development through projects
-• Regular problem solving and coding practice`
+• Regular problem solving and coding practice`,
   },
-
-  
 };
 
 // -------- DOM READY --------
 document.addEventListener("DOMContentLoaded", () => {
-
   const demo1 = document.getElementById("resumeDemo1");
   const demo2 = document.getElementById("resumeDemo2");
 
@@ -1634,7 +1607,6 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     console.warn("Resume demo buttons not found in DOM");
   }
-
 });
 
 // -------- INJECT FUNCTION --------
@@ -1648,4 +1620,3 @@ function injectResumeDemo(option) {
   document.getElementById("skills").value = data.skills;
   document.getElementById("extracurricular").value = data.extracurricular;
 }
-
